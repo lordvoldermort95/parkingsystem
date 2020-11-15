@@ -1,0 +1,72 @@
+#include <stdio.h>
+int main() {
+    int h,m;//hours and minutes var
+    printf("AB PARKING TICKET SYSTEM\nInsert parking ticket\n");
+    printf("Enter hour>> ");
+    scanf("%d",&h);
+    printf("Enter minute>> ");
+    scanf("%d",&m);
+    if(m==60) //just incase our user is smart and shows minutes as 60 and hours lesser!
+    {
+        h++; //increase hour value
+        m=0; //make minutes to 0
+        }
+        printf("Parking duration: %d hours %d minutes",h,m);
+    printf("\nParking charges: RM ");
+    float pc;//parking charges var
+    int ch=h;//new hour var to calculate
+    if(ch<1 && m<=20) //if below 20 minutes
+        pc=0.00;
+    else if(ch<1 && m<=59) //if below one hour
+        pc=2.00;
+    else if(ch>=3) //if 3 or more hours 
+        pc=5.00;
+    else if (ch>=1 && ch<3) //if it is more than an hour and less than 3 hours
+    {
+        pc=2.00; //base charge
+        ch--;//reduce hours by one because first hour is 2.00 RM
+        while(ch>=1){ //if we still have pending hours
+                        pc++; //increase parking charge amount by 1.00 RM
+                        ch--; //reduce one hour as it has been charged
+                }
+        if(m>0) //incase we still have any minutes pending
+            pc++; //increase parking charge by 1.00RM
+    }
+    printf("%0.2f",pc);
+    float note,payment=0, bal=pc; //note-input amount, payment - total bill, bal - balance
+    while(bal>0) //incase there is amount yet to be paid
+    {
+        printf("\nPlease insert payment RM %0.2f>> ",bal);
+        scanf("%f",&note);
+        if(note>bal) //if note given is more than the balance to be paid
+        {
+            printf("Note value exceeds!"); //show message
+            continue;
+        }
+        if(note==1 || note==5 || note==10) //if the note is a valid one,
+        {
+            bal=bal-note; //update balance 
+            payment=payment+note; //update payments for so far
+            printf("Total: RM %0.2f",payment);
+        }
+        else
+        {
+            printf("Invalid note"); //incase it is an invalid note
+        }
+    }
+    printf("\nWait for parking ticket to be printed out!!!");
+    char choice; 
+    fflush(stdin); //clearing the buffer
+    printf("\nDo you want a receipt? >> ");
+    scanf("%c",&choice);//get input if the user wants the receipt
+    if(choice=='Y' || choice=='y') //show data
+    {
+        printf("Printing receipt...\n");
+        printf("Parking Hours: %d hours %d minutes\n",h,m);
+        printf("Parking charges: RM %0.2f\n",pc);
+        printf("Amount Paid: RM %0.2f\n",payment);
+        printf("Balance: RM %0.2f",bal);
+    }
+    printf("\nThank You.");
+    return 0;
+}
